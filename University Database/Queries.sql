@@ -123,14 +123,49 @@ WHERE ProfessorID = (
 		WHERE ProfessorID = 1
 		)
 
-	--- What are the names of the careers that have a duration longer than the average career duration?
+--- What are the names of the careers that have a duration longer than the average career duration?
+SELECT CareerName
+FROM Career
+WHERE DurationYears > (
+		SELECT AVG(DurationYears)
+		FROM Career
+		)
 
-	--**8. Using Joins:**
-	--- How can we extract the names of courses and the names of professors who teach them?
-	--- How can we extract the names of departments and the names of careers that belong to them?
-	--**9. Updating Data:**
-	--- How can we change the name of a specific course (ID = 1)?
-	--- How can we change the email of a specific professor (ID = 1)?
-	--**10. Deleting Data:**
-	--- How can we delete a specific course (ID = 1)?
-	--- How can we delete a specific professor (ID = 1)?
+--**8. Using Joins:**
+--- How can we extract the names of courses and the names of professors who teach them?
+SELECT CourseName,
+	FirstName + ' ' + LastName AS FullName
+FROM Course
+JOIN ProfessorCourse
+	ON Course.CourseID = ProfessorCourse.CourseID
+JOIN Professor
+	ON ProfessorCourse.ProfessorID = Professor.ProfessorID
+
+--- How can we extract the names of departments and the names of careers that belong to them?
+SELECT DepartmentName,
+	CareerName
+FROM Department
+JOIN Career
+	ON Department.DepartmentID = Career.DepartmentID
+
+--**9. Updating Data:**
+--- How can we change the name of a specific course (ID = 1)?
+UPDATE Course
+SET CourseName = 'Database Systems (DB_SYS)'
+WHERE CourseID = 1
+
+--- How can we change the email of a specific professor (ID = 1)?
+UPDATE Professor
+SET Email = 'johndoe123@gmail.com'
+WHERE ProfessorID = 1
+
+--**10. Deleting Data:**
+--- How can we delete a specific course (ID = 1)?
+DELETE
+FROM ProfessorCourse
+WHERE CourseID = 1;
+
+--- How can we delete a specific professor (ID = 1)?
+DELETE
+FROM Professor
+WHERE ProfessorID = 1;
