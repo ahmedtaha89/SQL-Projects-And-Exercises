@@ -1,3 +1,8 @@
+/* SQL Queries of AdventureWorks Database:
+The AdventureWorks Database is a Microsoft product sample that provides an example of an online transaction processing (OLTP) database. 
+Adventure Works Cycles is a fictitious multinational manufacturing company that is supported by the AdventureWorks Database.*/
+-- Link: https://www.w3resource.com/sql-exercises/adventureworks/index.php
+
 USE AdventureWorks2022;
 
 /* 1. From the following table write a query in SQL to retrieve all rows and columns 
@@ -83,3 +88,23 @@ WHERE Shelf IN ('A','C','H')
 GROUP BY productid
 HAVING SUM(Quantity) > 500
 ORDER BY productid;
+
+-- 10. From the following table write a query in SQL to find the total quentity for a group of locationid multiplied by 10.
+SELECT SUM(Quantity) AS total_quentity 
+FROM production.productinventory
+GROUP BY locationid * 10
+
+/* 11. From the following tables write a query in SQL to find the persons whose last name starts with letter 'L'. 
+Return BusinessEntityID, FirstName, LastName, and PhoneNumber. Sort the result on lastname and firstname. */
+SELECT Person.Person.BusinessEntityID,FirstName,LastName,PhoneNumber AS person_phone
+FROM Person.PersonPhone  JOIN Person.Person
+ON PersonPhone.BusinessEntityID = Person.Person.BusinessEntityID
+WHERE LastName LIKE 'L%'
+ORDER BY  LastName , FirstName 
+
+/* 12. From the following table write a query in SQL to find the sum of subtotal column. 
+Group the sum on distinct salespersonid and customerid. Rolls up the results into subtotal and running total.
+Return salespersonid, customerid and sum of subtotal column i.e. sum_subtotal. */
+SELECT salespersonid,customerid,sum(subtotal) AS sum_subtotal
+FROM sales.salesorderheader s 
+GROUP BY ROLLUP (salespersonid, customerid);
