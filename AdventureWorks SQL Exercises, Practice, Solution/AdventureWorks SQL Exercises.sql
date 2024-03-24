@@ -102,9 +102,25 @@ ON PersonPhone.BusinessEntityID = Person.Person.BusinessEntityID
 WHERE LastName LIKE 'L%'
 ORDER BY  LastName , FirstName 
 
+--**
 /* 12. From the following table write a query in SQL to find the sum of subtotal column. 
 Group the sum on distinct salespersonid and customerid. Rolls up the results into subtotal and running total.
 Return salespersonid, customerid and sum of subtotal column i.e. sum_subtotal. */
 SELECT salespersonid,customerid,sum(subtotal) AS sum_subtotal
 FROM sales.salesorderheader s 
 GROUP BY ROLLUP (salespersonid, customerid);
+
+/* 13. From the following table write a query in SQL to find the sum of
+the quantity of all combination of group of distinct locationid and shelf column.
+Return locationid, shelf and sum of quantity as TotalQuantity. */
+SELECT locationid, 
+	   shelf,
+	   SUM(Quantity) AS TotalQuantity
+FROM production.productinventory
+GROUP BY locationid , shelf
+
+
+SELECT locationid, shelf, SUM(quantity) AS TotalQuantity
+FROM production.productinventory
+GROUP BY CUBE (locationid, shelf);
+
